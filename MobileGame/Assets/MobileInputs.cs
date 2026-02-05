@@ -17,6 +17,31 @@ public class MobileInputs : MonoBehaviour
     {
         if (Input.touchCount > 0)
         {
+            if (Input.touchCount == 2)
+            {
+                Touch t1 = Input.touches[0];
+                Touch t2 = Input.touches[1];
+                float t_d_start = 0.0f;
+                float t_d_new = 0.0f;
+                float objectScaler;
+                switch (t2.phase)
+                {
+                    case TouchPhase.Began:
+                        print("The touch phase is" + t2.phase);
+                        t_d_start = Vector2.Distance(t1.position, t2.position);
+                        t_d_new = Vector2.Distance(t1.position, t2.position);
+                        break;
+                    case TouchPhase.Moved:
+                        print("The touch phase is" + t2.phase);
+                        t_d_new = Vector2.Distance(t1.position, t2.position);
+                        break;
+                    case TouchPhase.Ended:
+                        print("The touch phase is" + t2.phase);
+                        theManager.pinchAt(t_d_start, t_d_new);
+                        break;
+                }
+            }
+            else { 
             touch = Input.touches[0];
             float timer = 0.0f;
             bool hasMoved = false;
@@ -49,6 +74,7 @@ public class MobileInputs : MonoBehaviour
                         }
                     }
                     break;
+            }
             }
         }
         else
