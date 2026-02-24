@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ManagerAction : MonoBehaviour
 {
+    [SerializeField] private Material selectionMaterial;
+    private Material deselectedMaterial;
     internal void TapAt(Vector2 position)
     {
         Ray ourRay = Camera.main.ScreenPointToRay(position);
@@ -12,7 +14,12 @@ public class ManagerAction : MonoBehaviour
         {
             Debug.DrawRay(ourRay.origin, ourRay.origin + 100 * ourRay.direction, Color.yellow, 2);
             Debug.Log("Did Hit");
-            
+            var selectedObject = amIHitting.transform;
+            var selectedObjectRenderer = selectedObject.GetComponent<Renderer>();
+            if (selectedObjectRenderer != null)
+            {
+                selectedObjectRenderer.material = selectionMaterial;
+            }
         }
         else
         {
@@ -20,14 +27,9 @@ public class ManagerAction : MonoBehaviour
             Debug.Log("Did not Hit");
         }
     }
-    void ImSelected(GameObject selectedObject)
-    {
-        var objectRenderer = selectedObject.GetComponent<Renderer>();
-        objectRenderer.material.SetColor("_Color", Color.yellow);
-    }
     internal void pinchAt(float startPos, float endPos)
     {
-        Ray ourRay = Camera.main.ScreenPointToRay(position);
+        /*Ray ourRay = Camera.main.ScreenPointToRay(position);
         RaycastHit amIHitting;
         if (Physics.Raycast(ourRay.origin, ourRay.direction, out amIHitting))
 
@@ -40,7 +42,7 @@ public class ManagerAction : MonoBehaviour
         {
             Debug.DrawRay(ourRay.origin, ourRay.origin + 100 * ourRay.direction, Color.red, 2);
             Debug.Log("Did not Hit");
-        }
+        }*/
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

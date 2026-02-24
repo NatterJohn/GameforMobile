@@ -514,6 +514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb6021885c4c40445897951f038e11a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionMaterial: {fileID: 2100000, guid: c2e40fa84d53ccd428f640eac126b1fb, type: 2}
 --- !u!4 &555282228
 Transform:
   m_ObjectHideFlags: 0
