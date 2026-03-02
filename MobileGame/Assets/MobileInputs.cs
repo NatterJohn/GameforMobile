@@ -12,9 +12,13 @@ public class MobileInputs : MonoBehaviour
     }
     int RobsInt = 5;
     Touch touch;
+    float timer = 0.0f;
+    bool hasMoved = false;
+    bool hasTapped = false;
     // Update is called once per frame
     void Update()
     {
+        
         if (Input.touchCount > 0)
         {
             if (Input.touchCount == 2)
@@ -43,13 +47,11 @@ public class MobileInputs : MonoBehaviour
             }
             else { 
             touch = Input.touches[0];
-            float timer = 0.0f;
-            bool hasMoved = false;
-            bool hasTapped = false;
             switch (touch.phase)
             {
                 case TouchPhase.Began:
                     print("The touch phase is" + touch.phase);
+                    hasTapped = false;
                     hasMoved = false;
                     timer = 0.0f;
                     break;
@@ -79,7 +81,7 @@ public class MobileInputs : MonoBehaviour
         }
         else
         {
-            print(RobsInt);
+            
         }
     }
 }
