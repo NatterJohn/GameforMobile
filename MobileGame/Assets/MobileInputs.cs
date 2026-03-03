@@ -61,6 +61,7 @@ public class MobileInputs : MonoBehaviour
                     break;
                 case TouchPhase.Moved:
                     print("The touch phase is" + touch.phase);
+                        theManager.moveIt(touch.position);
                     hasMoved = true;
                     break;
                 case TouchPhase.Ended:
