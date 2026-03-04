@@ -91,20 +91,7 @@ public class ManagerAction : MonoBehaviour
 
     internal void pinchAt(float startPos, float endPos)
     {
-        /*Ray ourRay = Camera.main.ScreenPointToRay(position);
-        RaycastHit amIHitting;
-        if (Physics.Raycast(ourRay.origin, ourRay.direction, out amIHitting))
-
-        {
-            Debug.DrawRay(ourRay.origin, ourRay.origin + 100 * ourRay.direction, Color.yellow, 2);
-            Debug.Log("Did Hit");
-
-        }
-        else
-        {
-            Debug.DrawRay(ourRay.origin, ourRay.origin + 100 * ourRay.direction, Color.red, 2);
-            Debug.Log("Did not Hit");
-        }*/
+        
     }
     
 
