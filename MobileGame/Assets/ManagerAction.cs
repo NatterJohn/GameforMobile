@@ -4,12 +4,11 @@ using UnityEngine.UIElements;
 
 public class ManagerAction : MonoBehaviour
 {
-    [SerializeField] private Material selectionMaterial;   // Material used to highlight a selected object
-    private Transform selectedObject;                      // Currently selected object's transform
-    private Renderer currentRenderer;                      // Renderer of the selected object
-    private Material originalMaterial;                     // Original material so we can restore it
-    private Plane dragPlane;                               // Plane used to calculate dragging movement
-    private Vector3 dragOffset;                            // Offset between hit point and object position
+    public Transform selectedObject;                      // Currently selected object's transform
+    public Renderer currentRenderer;                      // Renderer of the selected object
+    public Material originalMaterial;                     // Original material so we can restore it
+    public Plane dragPlane;                               // Plane used to calculate dragging movement
+    public Vector3 dragOffset;                            // Offset between hit point and object position
 
 
     internal void TapAt(Vector2 position)
@@ -28,31 +27,18 @@ public class ManagerAction : MonoBehaviour
                 originalMaterial = null;
                 selectedObject = null;
             }
+            // Mark this object as selected
+            selectedObject = hit.transform;
 
-            // Try to get a renderer from the object we hit
-            var renderer = hit.transform.GetComponent<Renderer>();
-            if (renderer != null)
+            // Create a drag plane perpendicular to the camera, passing through the object
+            dragPlane = new Plane(-Camera.main.transform.forward, selectedObject.position);
+
+            float distance;
+            // Find where the ray intersects the drag plane
+            if (dragPlane.Raycast(ray, out distance))
             {
-                // Store renderer and original material
-                currentRenderer = renderer;
-                originalMaterial = renderer.material;
-
-                // Apply highlight material
-                renderer.material = selectionMaterial;
-
-                // Mark this object as selected
-                selectedObject = hit.transform;
-
-                // Create a drag plane perpendicular to the camera, passing through the object
-                dragPlane = new Plane(-Camera.main.transform.forward, selectedObject.position);
-
-                float distance;
-                // Find where the ray intersects the drag plane
-                if (dragPlane.Raycast(ray, out distance))
-                {
-                    // Calculate offset so dragging feels natural (no snapping)
-                    dragOffset = selectedObject.position - ray.GetPoint(distance);
-                }
+                // Calculate offset so dragging feels natural (no snapping)
+                dragOffset = selectedObject.position - ray.GetPoint(distance);
             }
         }
         else

@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 128695232}
   - component: {fileID: 128695231}
   - component: {fileID: 128695230}
+  - component: {fileID: 128695234}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -227,6 +228,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &128695234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128695229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1ea38f4c341e624aa634e590b5d9949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionMaterial: {fileID: 2100000, guid: 9875a245ac49007498213638a307faa1, type: 2}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,7 +528,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb6021885c4c40445897951f038e11a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionMaterial: {fileID: 2100000, guid: c2e40fa84d53ccd428f640eac126b1fb, type: 2}
+  selectedObject: {fileID: 0}
+  currentRenderer: {fileID: 0}
+  originalMaterial: {fileID: 0}
+  dragOffset: {x: 0, y: 0, z: 0}
 --- !u!4 &555282228
 Transform:
   m_ObjectHideFlags: 0
@@ -591,6 +608,7 @@ GameObject:
   - component: {fileID: 1602834885}
   - component: {fileID: 1602834884}
   - component: {fileID: 1602834883}
+  - component: {fileID: 1602834887}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -687,6 +705,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1602834887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602834882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e3620c41fa032c479a99e5cb49b1957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionMaterial: {fileID: 2100000, guid: c2e40fa84d53ccd428f640eac126b1fb, type: 2}
 --- !u!1 &1657967635
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,6 +730,7 @@ GameObject:
   - component: {fileID: 1657967638}
   - component: {fileID: 1657967637}
   - component: {fileID: 1657967636}
+  - component: {fileID: 1657967640}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -797,6 +829,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1657967640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657967635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 704caf0f1df541642b5190766347868d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionMaterial: {fileID: -876546973899608171, guid: 80aa867ac363ac043847b06ad71604cd, type: 3}
 --- !u!1 &1969116516
 GameObject:
   m_ObjectHideFlags: 0
