@@ -1,58 +1,52 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class CapsuleScript : MonoBehaviour, I_Interactible
-{
-    [SerializeField] private Material selectionMaterial;   // Material used to highlight a selected object
-    private Transform selectedObject;                      // Currently selected object's transform
-    private Renderer currentRenderer;                      // Renderer of the selected object
-    private Material originalMaterial;                     // Original material so we can restore it
 
-    public void moveIt(Vector2 position)
+{
+    private Renderer rend;
+    private Material originalMaterial;
+
+    [SerializeField] private Material highlightMaterial;
+
+    void Awake()
     {
-        throw new System.NotImplementedException();
+        rend = GetComponent<Renderer>();
+        originalMaterial = rend.material;
     }
 
-    public void TapAt(Vector2 position)
+    public void TapAt(Vector3 worldPosition)
     {
-        Ray ray = Camera.main.ScreenPointToRay(position);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
-        {
-            // Try to get a renderer from the object we hit
-            var renderer = hit.transform.GetComponent<Renderer>();
-            if (renderer != null)
-            {
-                // Store renderer and original material
-                currentRenderer = renderer;
-                originalMaterial = renderer.material;
 
-                // Apply highlight material
-                renderer.material = selectionMaterial;
-            }
-            else
-            {
-                // If the ray hit nothing, clear selection
-                if (currentRenderer != null)
-                {
-                    currentRenderer.material = originalMaterial;
-                    currentRenderer = null;
-                    originalMaterial = null;
-                    selectedObject = null;
-                }
-            }
-        }
+    }
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
+    public void MoveIt(Vector3 newPosition)
+    {
+        transform.position = newPosition;
+    }
 
-        }
+    public void PinchAt(float start, float end)
+    {
 
-        // Update is called once per frame
-        void Update()
-        {
+    }
 
-        }
+    public void ScaleIt(float scaleDelta)
+    {
+        transform.localScale += Vector3.one * scaleDelta;
+    }
+
+    public void RotateAt(float rotationDelta)
+    {
+        transform.Rotate(Vector3.up, rotationDelta, Space.World);
+    }
+
+    public void ObjectSelected()
+    {
+        if (highlightMaterial != null)
+            rend.material = highlightMaterial;
+    }
+
+    public void ObjectDeselected()
+    {
+        rend.material = originalMaterial;
     }
 }

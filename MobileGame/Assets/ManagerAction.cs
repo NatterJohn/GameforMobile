@@ -1,98 +1,111 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class ManagerAction : MonoBehaviour
 {
-    public Transform selectedObject;                      // Currently selected object's transform
-    public Renderer currentRenderer;                      // Renderer of the selected object
-    public Material originalMaterial;                     // Original material so we can restore it
-    public Plane dragPlane;                               // Plane used to calculate dragging movement
-    public Vector3 dragOffset;                            // Offset between hit point and object position
+    [SerializeField] private Material selectionMaterial;
+
+    private Transform selectedObject;
+
+    private Plane dragPlane;
+    private Vector3 dragOffset;
+    private Vector2 lastPanPosition;
+    private bool isPanning = false;
+    private float delta = 0;
+
+    private I_Interactible selectedInteractible;
 
 
-    internal void TapAt(Vector2 position)
+    internal void tapAt(Vector2 position)
     {
-        // Convert screen touch/click into a world-space ray
         Ray ray = Camera.main.ScreenPointToRay(position);
         RaycastHit hit;
 
+        // Clear previous selection
+        if (selectedObject != null)
+        {
+            selectedInteractible.ObjectDeselected();
+            selectedObject = null;
+            selectedInteractible = null;
+        }
+
         if (Physics.Raycast(ray, out hit))
         {
-            // If something was previously selected, restore its original material
-            if (currentRenderer != null)
-            {
-                currentRenderer.material = originalMaterial;
-                currentRenderer = null;
-                originalMaterial = null;
-                selectedObject = null;
-            }
-            // Mark this object as selected
-            selectedObject = hit.transform;
+            selectedInteractible = hit.transform.GetComponent<I_Interactible>();
 
-            // Create a drag plane perpendicular to the camera, passing through the object
-            dragPlane = new Plane(-Camera.main.transform.forward, selectedObject.position);
+            if (selectedInteractible != null)
+            {
+                selectedObject = hit.transform;
 
-            float distance;
-            // Find where the ray intersects the drag plane
-            if (dragPlane.Raycast(ray, out distance))
-            {
-                // Calculate offset so dragging feels natural (no snapping)
-                dragOffset = selectedObject.position - ray.GetPoint(distance);
-            }
-        }
-        else
-        {
-            // If the ray hit nothing, clear selection
-            if (currentRenderer != null)
-            {
-                currentRenderer.material = originalMaterial;
-                currentRenderer = null;
-                originalMaterial = null;
-                selectedObject = null;
+                selectedInteractible.ObjectSelected();
+
+                dragPlane = new Plane(-Camera.main.transform.forward, selectedObject.position);
+
+                float distance;
+                if (dragPlane.Raycast(ray, out distance))
+                {
+                    dragOffset = selectedObject.position - ray.GetPoint(distance);
+                }
+
+                selectedInteractible.TapAt(selectedObject.position);
             }
         }
     }
-
 
     internal void moveIt(Vector2 position)
     {
-        // Only move if something is selected
-        if (selectedObject == null)
-            return;
+        if (selectedObject == null || selectedInteractible == null)
+        {
+            if (!isPanning)
+            {
+                lastPanPosition = position;
+                isPanning = true;
+                return;
+            }
+            Vector2 delta = position - lastPanPosition;
+            lastPanPosition = position;
 
-        // Convert screen position to a ray again
+            // Adjust sensitivity to taste
+            float panSpeed = 0.01f;
+
+            Vector3 move = new Vector3(-delta.x * panSpeed, -delta.y * panSpeed, 0);
+            Camera.main.transform.Translate(move, Space.Self);
+            return;
+        }
         Ray ray = Camera.main.ScreenPointToRay(position);
 
         float distance;
-        // Check where this ray intersects the drag plane
         if (dragPlane.Raycast(ray, out distance))
         {
-            // Move object to intersection point + original offset
             Vector3 point = ray.GetPoint(distance);
-            selectedObject.position = point + dragOffset;
+            Vector3 newPos = point + dragOffset;
+
+            selectedObject.position = newPos;
+            selectedInteractible.MoveIt(newPos);
         }
     }
 
-
     internal void pinchAt(float startPos, float endPos)
     {
-        
-    }
-    
+        if (selectedInteractible == null)
+        {
+            delta = endPos - startPos;
 
+            float zoomSpeed = 0.05f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-        
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+            Camera.main.transform.Translate(Vector3.forward * delta * zoomSpeed, Space.Self);
+            return;
+        }
+        delta = endPos - startPos;
 
-    
+        // Scale
+        selectedInteractible.ScaleIt(delta * 0.01f);
+
+        // Rotate
+        selectedInteractible.RotateAt(delta * 0.2f);
+
+        // Notify pinch
+        selectedInteractible.PinchAt(startPos, endPos);
+    }
 }

@@ -72,7 +72,7 @@ public class MobileInputs : MonoBehaviour
                         {
                             print("That was a tap!");
                             hasTapped = true;
-                            theManager.TapAt(touch.position);
+                            theManager.tapAt(touch.position);
                             print(timer);
                         }
                     }
