@@ -29,14 +29,14 @@ public class CapsuleScript : MonoBehaviour, I_Interactible
 
     }
 
-    public void ScaleIt(float scaleDelta)
+    public void ScaleIt(float scale)
     {
-        transform.localScale += Vector3.one * scaleDelta;
+        transform.localScale += Vector3.one * scale;
     }
 
-    public void RotateAt(float rotationDelta)
+    public void RotateAt(float rotation)
     {
-        transform.Rotate(Vector3.up, rotationDelta, Space.World);
+        transform.Rotate(Vector3.forward, rotation, Space.World);
     }
 
     public void ObjectSelected()

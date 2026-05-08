@@ -28,14 +28,23 @@ public class CubeScript : MonoBehaviour, I_Interactible
         
     }
 
-    public void ScaleIt(float scaleDelta)
+    public void ScaleIt(float scale)
     {
-        transform.localScale += Vector3.one * scaleDelta;
+        float minScale = 0.2f;
+        float maxScale = 3.0f;
+        Vector3 newScale = transform.localScale += Vector3.one * scale;
+
+        // Clamp each axis
+        newScale.x = Mathf.Clamp(newScale.x, minScale, maxScale);
+        newScale.y = Mathf.Clamp(newScale.y, minScale, maxScale);
+        newScale.z = Mathf.Clamp(newScale.z, minScale, maxScale);
+
+        transform.localScale = newScale;
     }
 
-    public void RotateAt(float rotationDelta)
+    public void RotateAt(float rotation)
     {
-        transform.Rotate(Vector3.up, rotationDelta, Space.World);
+        transform.Rotate(Vector3.forward, rotation, Space.World);
     }
 
     public void ObjectSelected()
